@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Фан-сайт Grand Theft Auto VI. Отсчет до релиза, герои и особенности штата Леонида.">
+<meta name="theme-color" content="#08080f">
+<title>GTA VI — Leonida Awaits</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="https://i.postimg.cc/yxSNxdzT/IMG-20261115-233813.jpg">
+
+<style>
+  :root{
+    --bg:#08080f; --bg2:#0e0e1a; --pink:#ff2d95; --cyan:#00e5ff;
+    --violet:#8b5cf6; --orange:#ff8a3d; --text:#eaeaf2; --muted:#9a9ab0;
+    --card:rgba(255,255,255,.04); --border:rgba(255,255,255,.09);
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; outline: none; }
+  html{ scroll-behavior:smooth; -webkit-tap-highlight-color: transparent; }
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:var(--bg); color:var(--text);
+    overflow-x:hidden; line-height:1.6;
+    user-select: none; -webkit-user-select: none;
+  }
+  ::selection{background:var(--pink);color:#fff}
+
+  /* ==================== ЭКРАН ВХОДА ==================== */
+  #intro-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    cursor: pointer; overflow: hidden;
+    transition: visibility 0s 0.6s;
+    touch-action: manipulation;
+  }
+  #intro-overlay.hidden { visibility: hidden; pointer-events: none; }
+
+  .intro-bg {
+    position: absolute; inset: 0; background: var(--bg);
+    transition: opacity 0.5s ease; z-index: 0;
+  }
+  #intro-overlay.hidden .intro-bg { opacity: 0; }
+
+  .intro-bg-orb {
+    position: absolute; border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.75;
+    transition: opacity 0.5s ease;
+    z-index: 0;
+    will-change: transform;
+    animation: float 20s ease-in-out infinite;
+    transform: translate3d(0,0,0);
+  }
+  #intro-overlay.hidden .intro-bg-orb { opacity: 0; }
+
+  .intro-bg-orb.a {
+    width: 520px; height: 520px; top: -160px; left: -160px;
+    background: radial-gradient(circle,
+      rgba(255,45,149,0.7) 0%,
+      rgba(255,45,149,0.4) 20%,
+      rgba(139,92,246,0.25) 45%,
+      rgba(0,229,255,0.1) 70%,
+      transparent 90%);
+  }
+  .intro-bg-orb.b {
+    width: 480px; height: 480px; bottom: -160px; right: -160px;
+    background: radial-gradient(circle,
+      rgba(0,229,255,0.65) 0%,
+      rgba(0,229,255,0.35) 20%,
+      rgba(139,92,246,0.25) 45%,
+      rgba(255,45,149,0.1) 70%,
+      transparent 90%);
+    animation-duration: 26s;
+    animation-delay: -6s;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate3d(0,0,0) scale(1); }
+    50%      { transform: translate3d(50px,-50px,0) scale(1.15); }
+  }
+
+  .intro-logo-wrap {
+    position: relative; z-index: 2; width: 80%; max-width: 400px;
+    margin-bottom: 50px; transform-origin: center center;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+    will-change: transform, opacity;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+  }
+  #intro-overlay.hidden .intro-logo-wrap {
+    transform: translate3d(0, 0, 0) scale3d(5, 5, 1);
+    opacity: 0;
+  }
+
+  .intro-logo {
+    width: 100%; display: block;
+    filter: drop-shadow(0 0 35px rgba(255, 45, 149, 0.6));
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+  }
+  #intro-overlay.hidden .intro-logo {
+    filter: none;
+    will-change: auto;
+  }
+
+  .click-hint {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    transition: opacity 0.4s ease;
+  }
+  #intro-overlay.hidden .click-hint { opacity: 0; }
+
+  .enter-btn {
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    background: transparent;
+    cursor: pointer;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    animation: circlePulse 2.5s ease-in-out infinite;
+  }
+  .enter-btn:hover {
+    transform: scale(1.08);
+    border-color: #fff;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+  }
+  .enter-label {
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 6px; text-transform: uppercase;
+    color: #fff; opacity: 0.85;
+    animation: labelFade 2.5s ease-in-out infinite;
+  }
+  @keyframes circlePulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 255, 255, 0.2); }
+    50%      { transform: scale(1.05); box-shadow: 0 0 40px rgba(255, 255, 255, 0.5); }
+  }
+  @keyframes labelFade {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  /* ============================================================
+     ЗВЁЗДЫ — 3 слоя с параллаксом и мерцанием
+     ============================================================ */
+  .stars {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    contain: strict;
+  }
+
+  .stars-layer {
+    position: absolute;
+    top: -50%;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    background-repeat: repeat;
+    will-change: transform, opacity;
+    transform: translate3d(0,0,0);
+  }
+
+  /* Дальние звёзды — мелкие, тусклые, медленные */
+  .stars-far {
+    background-image:
+      radial-gradient(1px 1px at 25px 35px, rgba(255,255,255,0.9), transparent 50%),
+      radial-gradient(1px 1px at 75px 85px, rgba(255,255,255,0.6), transparent 50%),
+      radial-gradient(1px 1px at 125px 55px, rgba(0,229,255,0.7), transparent 50%),
+      radial-gradient(1px 1px at 175px 105px, rgba(255,255,255,0.5), transparent 50%),
+      radial-gradient(1px 1px at 55px 145px, rgba(255,45,149,0.6), transparent 50%),
+      radial-gradient(1px 1px at 155px 175px, rgba(255,255,255,0.7), transparent 50%),
+      radial-gradient(1px 1px at 200px 20px, rgba(139,92,246,0.7), transparent 50%),
+      radial-gradient(1px 1px at 15px 195px, rgba(255,255,255,0.5), transparent 50%);
+    background-size: 220px 220px;
+    animation: starsDriftSlow 240s linear infinite;
+  }
+
+  /* Средние звёзды — чуть больше, с мерцанием */
+  .stars-mid {
+    background-image:
+      radial-gradient(1.5px 1.5px at 60px 40px, rgba(255,255,255,0.95), transparent 50%),
+      radial-gradient(1.5px 1.5px at 130px 90px, rgba(0,229,255,0.85), transparent 50%),
+      radial-gradient(1.5px 1.5px at 180px 30px, rgba(255,45,149,0.85), transparent 50%),
+      radial-gradient(1.5px 1.5px at 30px 130px, rgba(255,255,255,0.8), transparent 50%),
+      radial-gradient(1.5px 1.5px at 220px 180px, rgba(139,92,246,0.85), transparent 50%),
+      radial-gradient(1.5px 1.5px at 250px 60px, rgba(255,255,255,0.75), transparent 50%);
+    background-size: 290px 290px;
+    animation: starsDriftMid 160s linear infinite, twinkle 8s ease-in-out infinite alternate;
+  }
+
+  /* Ближние звёзды — крупные, яркие, быстрые */
+  .stars-near {
+    background-image:
+      radial-gradient(2px 2px at 100px 50px, rgba(255,255,255,1), transparent 50%),
+      radial-gradient(2px 2px at 200px 150px, rgba(0,229,255,0.95), transparent 50%),
+      radial-gradient(2px 2px at 50px 220px, rgba(255,45,149,0.95), transparent 50%),
+      radial-gradient(2px 2px at 280px 90px, rgba(255,255,255,0.9), transparent 50%);
+    background-size: 340px 340px;
+    animation: starsDriftFast 100s linear infinite, twinkle 5s ease-in-out -2s infinite alternate;
+  }
+
+  @keyframes starsDriftSlow {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(0, -220px, 0); }
+  }
+  @keyframes starsDriftMid {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(0, -290px, 0); }
+  }
+  @keyframes starsDriftFast {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(0, -340px, 0); }
+  }
+  @keyframes twinkle {
+    0%   { opacity: 0.35; }
+    100% { opacity: 1; }
+  }
+
+  /* ============================================================
+     КРАСИВЫЕ + ОПТИМИЗИРОВАННЫЕ ОРБЫ (пузырьки)
+     ============================================================ */
+  .orbs{
+    position: fixed; inset: 0;
+    z-index: 0; pointer-events: none; overflow: hidden;
+    contain: layout style;
+  }
+
+  .orb{
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    will-change: transform;
+    animation: float 22s ease-in-out infinite;
+    transform: translate3d(0,0,0);
+    mix-blend-mode: screen;
+  }
+
+  .orb-a {
+    width: 900px; height: 900px;
+    top: -380px; left: -320px;
+    animation-duration: 18s;
+  }
+  .orb-b {
+    width: 850px; height: 850px;
+    bottom: -360px; right: -320px;
+    animation-duration: 24s;
+    animation-delay: -6s;
+  }
+  .orb-c {
+    width: 800px; height: 800px;
+    top: 30%; left: 48%;
+    animation-duration: 30s;
+    animation-delay: -12s;
+  }
+
+  .orb-layer {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    will-change: opacity, transform;
+    animation: fadeLayer 10s ease-in-out infinite alternate;
+  }
+
+  .orb-a-1 {
+    background: radial-gradient(circle at 40% 40%,
+      rgba(255,45,149,0.85) 0%,
+      rgba(255,45,149,0.55) 15%,
+      rgba(255,45,149,0.3) 30%,
+      rgba(139,92,246,0.18) 50%,
+      rgba(139,92,246,0.08) 70%,
+      transparent 88%);
+  }
+  .orb-a-2 {
+    background: radial-gradient(circle at 60% 60%,
+      rgba(139,92,246,0.8) 0%,
+      rgba(139,92,246,0.5) 15%,
+      rgba(255,45,149,0.3) 30%,
+      rgba(0,229,255,0.15) 50%,
+      rgba(0,229,255,0.05) 70%,
+      transparent 88%);
+    animation-delay: -5s;
+    animation-duration: 13s;
+  }
+  .orb-a-3 {
+    background: radial-gradient(circle at 50% 50%,
+      rgba(255,45,149,0.6) 0%,
+      rgba(139,92,246,0.45) 25%,
+      rgba(0,229,255,0.25) 45%,
+      rgba(0,229,255,0.08) 65%,
+      transparent 85%);
+    animation: spin 50s linear infinite, fadeLayer 14s ease-in-out -3s infinite alternate;
+  }
+
+  .orb-b-1 {
+    background: radial-gradient(circle at 60% 40%,
+      rgba(0,229,255,0.85) 0%,
+      rgba(0,229,255,0.55) 15%,
+      rgba(0,229,255,0.3) 30%,
+      rgba(139,92,246,0.18) 50%,
+      rgba(139,92,246,0.08) 70%,
+      transparent 88%);
+  }
+  .orb-b-2 {
+    background: radial-gradient(circle at 40% 60%,
+      rgba(255,138,61,0.7) 0%,
+      rgba(255,138,61,0.45) 15%,
+      rgba(0,229,255,0.3) 30%,
+      rgba(139,92,246,0.15) 50%,
+      rgba(139,92,246,0.05) 70%,
+      transparent 88%);
+    animation-delay: -5s;
+    animation-duration: 13s;
+  }
+  .orb-b-3 {
+    background: radial-gradient(circle at 50% 50%,
+      rgba(0,229,255,0.6) 0%,
+      rgba(255,138,61,0.4) 25%,
+      rgba(255,45,149,0.25) 45%,
+      rgba(139,92,246,0.08) 65%,
+      transparent 85%);
+    animation: spin 60s linear infinite reverse, fadeLayer 16s ease-in-out -4s infinite alternate;
+  }
+
+  .orb-c-1 {
+    background: radial-gradient(circle at 50% 50%,
+      rgba(139,92,246,0.8) 0%,
+      rgba(139,92,246,0.5) 15%,
+      rgba(255,45,149,0.3) 30%,
+      rgba(0,229,255,0.18) 50%,
+      rgba(0,229,255,0.06) 70%,
+      transparent 88%);
+  }
+  .orb-c-2 {
+    background: radial-gradient(circle at 50% 50%,
+      rgba(255,45,149,0.7) 0%,
+      rgba(139,92,246,0.45) 20%,
+      rgba(255,138,61,0.25) 40%,
+      rgba(0,229,255,0.1) 60%,
+      transparent 85%);
+    animation-delay: -5s;
+    animation-duration: 13s;
+  }
+  .orb-c-3 {
+    background: radial-gradient(circle at 50% 50%,
+      rgba(0,229,255,0.55) 0%,
+      rgba(255,45,149,0.35) 25%,
+      rgba(139,92,246,0.2) 45%,
+      rgba(139,92,246,0.05) 65%,
+      transparent 85%);
+    animation: spin 70s linear infinite, fadeLayer 18s ease-in-out -6s infinite alternate;
+  }
+
+  /* Звёздная пыль внутри орбов */
+  .orb-a::after,
+  .orb-b::after,
+  .orb-c::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background:
+      radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(2px 2px at 70% 60%, rgba(0,229,255,0.8), transparent),
+      radial-gradient(1.5px 1.5px at 40% 80%, rgba(255,45,149,0.8), transparent),
+      radial-gradient(2px 2px at 85% 25%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1.5px 1.5px at 15% 75%, rgba(139,92,246,0.9), transparent),
+      radial-gradient(2px 2px at 55% 15%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1.5px 1.5px at 30% 50%, rgba(0,229,255,0.7), transparent),
+      radial-gradient(2px 2px at 80% 70%, rgba(255,45,149,0.7), transparent);
+    animation: twinkle 6s ease-in-out infinite alternate;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .orb-b::after { animation-delay: -2s; }
+  .orb-c::after { animation-delay: -4s; }
+
+  @keyframes fadeLayer {
+    0%   { opacity: 0.25; }
+    100% { opacity: 1; }
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  /* Пауза всех анимаций фона во время скролла */
+  body.scrolling .orb,
+  body.scrolling .orb-layer,
+  body.scrolling .orb::after,
+  body.scrolling .stars-layer,
+  body.scrolling .intro-bg-orb {
+    animation-play-state: paused;
+  }
+
+  /* ==================== НАВИГАЦИЯ ==================== */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 6vw; background:rgba(8,8,15,.55);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border); transition:.3s;
+  }
+  .logo-img {
+    height: 38px; width: auto; display: block;
+    filter: drop-shadow(0 0 8px rgba(255, 45, 149, 0.6)) drop-shadow(0 0 16px rgba(0, 229, 255, 0.3));
+    transition: filter 0.3s ease;
+  }
+  .logo-img:hover {
+    filter: drop-shadow(0 0 12px rgba(255, 45, 149, 0.9)) drop-shadow(0 0 24px rgba(0, 229, 255, 0.5));
+  }
+  .nav-links{display:flex;gap:28px;list-style:none; margin-left: auto; margin-right: 20px;}
+  .nav-links a{
+    color:var(--muted);text-decoration:none;font-size:14px;font-weight:600;
+    letter-spacing:.5px;text-transform:uppercase;transition:.25s;position:relative;
+    cursor: pointer;
+  }
+  .nav-links a:hover{color:#fff}
+  .nav-links a::after{
+    content:'';position:absolute;left:0;bottom:-6px;height:2px;width:0;
+    background:linear-gradient(90deg,var(--pink),var(--cyan));transition:.3s;
+  }
+  .nav-links a:hover::after{width:100%}
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:0;}
+  .burger span{width:26px;height:2px;background:#fff;transition:.3s}
+
+  header{
+    position:relative;z-index:1; min-height:100vh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center; padding:120px 6vw 60px;
+  }
+  .badge{
+    display:inline-flex;align-items:center;gap:8px; padding:8px 18px;border-radius:100px;
+    background:rgba(255,45,149,.12);border:1px solid rgba(255,45,149,.4);
+    font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+    color:#ffb3d8;margin-bottom:28px;animation:fadeUp .8s both;
+  }
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--pink);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,45,149,.6)}50%{opacity:.6;box-shadow:0 0 0 8px rgba(255,45,149,0)}}
+
+  .hero-logo {
+    width: 70%; max-width: 480px; height: auto; margin-bottom: 20px;
+    animation: fadeUp .9s .1s both;
+    border-radius: 16px;
+    box-shadow: 0 0 50px rgba(255, 45, 149, 0.3), 0 0 90px rgba(0, 229, 255, 0.15);
+  }
+  .hero-sub{
+    max-width:620px;margin:26px auto 0;color:var(--muted);font-size:clamp(15px,1.6vw,19px);
+    animation:fadeUp .9s .2s both;
+  }
+  .hero-sub b{color:#fff}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+
+  .countdown{display:flex;gap:14px;margin:44px 0 10px;flex-wrap:wrap;justify-content:center;animation:fadeUp .9s .3s both}
+  .cd-box{
+    min-width:96px;padding:16px 12px;border-radius:16px;
+    background:var(--card);border:1px solid var(--border);backdrop-filter:blur(8px);
+    transition: border-color 0.5s ease, box-shadow 0.5s ease;
+  }
+  .cd-num{
+    font-family:'Anton',sans-serif;font-size:40px;line-height:1;
+    color: var(--cyan); text-shadow: 0 0 15px rgba(0,229,255,0.4);
+    transition: color 0.9s linear, text-shadow 0.9s linear, transform 0.15s ease, filter 0.15s ease;
+  }
+  #secs { color: var(--pink); text-shadow: 0 0 15px rgba(255,45,149,0.6); will-change: transform, filter; }
+  .cd-num.tick-pulse { transform: scale(1.15); filter: brightness(1.4); }
+  .cd-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:6px}
+
+  .cta-row{display:flex;gap:16px;margin-top:34px;flex-wrap:wrap;justify-content:center;animation:fadeUp .9s .4s both}
+  .btn{
+    padding:15px 34px;border-radius:100px;font-weight:700;font-size:15px;
+    text-decoration:none;letter-spacing:.5px;cursor:pointer;border:0;transition:.25s;display:inline-block;
+  }
+  .btn-primary{background:linear-gradient(90deg,var(--pink),var(--orange));color:#fff;box-shadow:0 8px 30px rgba(255,45,149,.35)}
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(255,45,149,.5)}
+  .btn-ghost{background:transparent;color:#fff;border:1px solid var(--border)}
+  .btn-ghost:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-3px)}
+
+  section{position:relative;z-index:1;padding:110px 6vw;max-width:1240px;margin:0 auto;}
+  .section-tag{font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);margin-bottom:14px}
+  h2{font-family:'Anton',sans-serif;font-size:clamp(38px,5.5vw,68px);line-height:1;letter-spacing:1px;margin-bottom:22px}
+  h2 .accent{background:linear-gradient(90deg,var(--pink),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{color:var(--muted);max-width:640px;font-size:17px;margin-bottom:50px}
+
+  .characters{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+  .char{
+    position:relative;border-radius:24px;padding:42px 34px;overflow:hidden;
+    background:linear-gradient(160deg,rgba(255,45,149,.14),rgba(0,229,255,.06));
+    border:1px solid var(--border);transition:.4s;
+  }
+  .char:hover{transform:translateY(-8px);border-color:rgba(255,45,149,.5)}
+  .char.jason{background:linear-gradient(160deg,rgba(0,229,255,.14),rgba(139,92,246,.06))}
+  .char.jason:hover{border-color:rgba(0,229,255,.5)}
+  .char-num{font-family:'Anton',sans-serif;font-size:13px;letter-spacing:4px;color:var(--muted)}
+  .char h3{font-family:'Anton',sans-serif;font-size:44px;letter-spacing:1px;margin:8px 0 14px}
+  .char p{color:var(--muted);font-size:15px}
+  .char .glyph{position:absolute;right:-10px;bottom:-30px;font-size:150px;font-weight:900;opacity:.06;font-family:'Anton',sans-serif;pointer-events:none}
+
+  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .feature{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:30px 26px;transition:.35s}
+  .feature:hover{transform:translateY(-6px);background:rgba(255,255,255,.07);border-color:rgba(255,45,149,.35)}
+  .feature .ico{
+    width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:22px;margin-bottom:18px;
+    background:linear-gradient(135deg,rgba(255,45,149,.25),rgba(0,229,255,.15));border:1px solid var(--border);
+  }
+  .feature h4{font-size:18px;margin-bottom:8px;font-weight:700}
+  .feature p{color:var(--muted);font-size:14.5px}
+
+  .release{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+  .release-card{ background:linear-gradient(145deg,rgba(255,45,149,.12),rgba(0,229,255,.06)); border:1px solid var(--border);border-radius:26px;padding:44px; }
+  .release-date{font-family:'Anton',sans-serif;font-size:clamp(34px,5vw,56px);line-height:1;margin-bottom:10px}
+  .release-card small{color:var(--muted);letter-spacing:2px;text-transform:uppercase;font-size:12px}
+  .platforms{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+  .platform{padding:11px 20px;border-radius:100px;border:1px solid var(--border);background:rgba(255,255,255,.04);font-size:14px;font-weight:600}
+  .checklist{list-style:none;display:grid;gap:16px}
+  .checklist li{display:flex;gap:14px;align-items:flex-start;color:var(--muted);font-size:15.5px}
+  .check{ flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center; background:linear-gradient(135deg,var(--pink),var(--orange));color:#fff;font-size:13px;font-weight:900; }
+
+  .faq{display:grid;gap:14px;max-width:820px}
+  .faq-item{border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--card);transition:.3s}
+  .faq-item.open{border-color:rgba(0,229,255,.4)}
+  .faq-q{
+    width:100%;text-align:left;background:none;border:0;color:#fff;cursor:pointer;
+    padding:22px 24px;font-size:16.5px;font-weight:600;font-family:inherit;
+    display:flex;justify-content:space-between;align-items:center;gap:16px;
+  }
+  .faq-q .plus{font-size:22px;color:var(--pink);transition:.3s;flex:none}
+  .faq-item.open .plus{transform:rotate(45deg)}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease;color:var(--muted)}
+  .faq-a div{padding:0 24px 22px;font-size:15px}
+
+  footer{ position:relative;z-index:1;border-top:1px solid var(--border); padding:50px 6vw 40px;text-align:center;color:var(--muted);font-size:13.5px; }
+
+  @media(max-width:900px){
+    .logo-img { height: 30px; }
+    .nav-links{
+      position:fixed;inset:64px 0 auto 0;flex-direction:column;gap:0;
+      background:rgba(8,8,15,.97);backdrop-filter:blur(20px);
+      padding:20px 6vw 30px;border-bottom:1px solid var(--border);
+      transform:translateY(-140%);transition:.4s;z-index:90; margin:0;
+    }
+    .nav-links.open{transform:none}
+    .nav-links li{padding:14px 0;border-bottom:1px solid var(--border)}
+    .burger{display:flex}
+    .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .burger.open span:nth-child(2){opacity:0}
+    .burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .characters,.features,.release{grid-template-columns:1fr}
+    section{padding:80px 6vw}
+    .cd-box{min-width:78px;padding:12px 8px}
+    .cd-num{font-size:30px}
+    .release-card{padding:30px}
+    .hero-logo { max-width: 320px; }
+    .orb-a, .orb-b, .orb-c { width: 550px; height: 550px; }
+    .orb-a { top: -220px; left: -220px; }
+    .orb-b { bottom: -220px; right: -220px; }
+    .orb-c { width: 450px; height: 450px; }
+  }
+  @media(max-width:480px){
+    .logo-img { height: 26px; }
+    .countdown{gap:8px}
+    .cd-box{min-width:70px}
+    .hero-logo { max-width: 280px; }
+    .enter-btn { width: 76px; height: 76px; }
+    .enter-label { font-size: 10px; letter-spacing: 4px; }
+    .orb-a, .orb-b, .orb-c { width: 450px; height: 450px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ЭКРАН ВХОДА -->
+<div id="intro-overlay">
+  <div class="intro-bg"></div>
+  <div class="intro-bg-orb a"></div>
+  <div class="intro-bg-orb b"></div>
+  
+  <div class="intro-logo-wrap">
+    <img src="https://i.postimg.cc/0ysjKM72/GTA-6-Logo-PNG-from-Grand-Theft-Auto-VI-Transparent.png" alt="Grand Theft Auto VI" class="intro-logo">
+  </div>
+  
+  <div class="click-hint">
+    <div class="enter-btn"></div>
+    <div class="enter-label">Enter Vice City</div>
+  </div>
+</div>
+
+<!-- ЗВЁЗДЫ (сзади пузырьков) -->
+<div class="stars">
+  <div class="stars-layer stars-far"></div>
+  <div class="stars-layer stars-mid"></div>
+  <div class="stars-layer stars-near"></div>
+</div>
+
+<!-- ПУЗЫРЬКИ (орбы) -->
+<div class="orbs">
+  <div class="orb orb-a">
+    <div class="orb-layer orb-a-1"></div>
+    <div class="orb-layer orb-a-2"></div>
+    <div class="orb-layer orb-a-3"></div>
+  </div>
+  <div class="orb orb-b">
+    <div class="orb-layer orb-b-1"></div>
+    <div class="orb-layer orb-b-2"></div>
+    <div class="orb-layer orb-b-3"></div>
+  </div>
+  <div class="orb orb-c">
+    <div class="orb-layer orb-c-1"></div>
+    <div class="orb-layer orb-c-2"></div>
+    <div class="orb-layer orb-c-3"></div>
+  </div>
+</div>
+
+<nav>
+  <img src="https://i.postimg.cc/rp672wfj/IMG-71d2ea53-0025-4435-812c-0cc64e982042.png" alt="Logo" class="logo-img">
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">Леонида</a></li>
+    <li><a href="#characters">Герои</a></li>
+    <li><a href="#features">Особенности</a></li>
+    <li><a href="#release">Релиз</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <button class="burger" id="burger" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<header>
+  <div class="badge"><span class="dot"></span>Grand Theft Auto VI</div>
+  
+  <img src="https://i.postimg.cc/yxSNxdzT/IMG-20261115-233813.jpg" alt="Vice City" class="hero-logo">
+
+  <p class="hero-sub">
+    Штат <b>Леонида</b>. Город <b>Вайс-Сити</b>. Две судьбы — <b>Люсия</b> и <b>Джейсон</b>.
+    Самая масштабная история Rockstar Games уже на подходе.
+  </p>
+
+  <div class="countdown" id="countdown">
+    <div class="cd-box"><div class="cd-num" id="days">--</div><div class="cd-label">Дней</div></div>
+    <div class="cd-box"><div class="cd-num" id="hours">--</div><div class="cd-label">Часов</div></div>
+    <div class="cd-box"><div class="cd-num" id="mins">--</div><div class="cd-label">Минут</div></div>
+    <div class="cd-box" id="secs-box"><div class="cd-num" id="secs">--</div><div class="cd-label">Секунд</div></div>
+  </div>
+
+  <div class="cta-row">
+    <a href="#release" class="btn btn-primary">Дата релиза</a>
+    <a href="#about" class="btn btn-ghost">Узнать больше</a>
+  </div>
+</header>
+
+<section id="about">
+  <div class="reveal">
+    <div class="section-tag">Добро пожаловать</div>
+    <h2>Штат <span class="accent">Леонида</span></h2>
+    <p class="lead">
+      Солнце, пальмы, неон и криминал. Вайс-Сити возвращается — больше, ярче и опаснее, чем когда-либо.
+      От пляжей до болот, от роскошных небоскрёбов до глухих окраин: мир, который живёт своей жизнью.
+    </p>
+  </div>
+
+  <div class="characters reveal">
+    <div class="char">
+      <div class="char-num">01 / ГЕРОИНЯ</div>
+      <h3>Люсия</h3>
+      <p>Девушка с непростым прошлым и ясной целью. Она готова на всё, чтобы выбраться из ловушки обстоятельств — и не собирается делать это в одиночку.</p>
+      <div class="glyph">L</div>
+    </div>
+    <div class="char jason">
+      <div class="char-num">02 / ГЕРОЙ</div>
+      <h3>Джейсон</h3>
+      <p>Парень, которому нечего терять и который ищет свой шанс. Вместе с Люсией они становятся дуэтом, от которого содрогнётся весь штат.</p>
+      <div class="glyph">J</div>
+    </div>
+  </div>
+</section>
+
+<section id="characters">
+  <div class="reveal">
+    <div class="section-tag">Дуэт</div>
+    <h2>История <span class="accent">двоих</span></h2>
+    <p class="lead">
+      Впервые за долгое время в центре сюжета — пара протагонистов.
+      Их отношения, доверие и решения будут влиять на то, как развернётся история.
+    </p>
+  </div>
+
+  <div class="features reveal">
+    <div class="feature">
+      <div class="ico">🤝</div>
+      <h4>Два героя</h4>
+      <p>Переключайся между Люсией и Джейсоном и смотри на историю с разных сторон.</p>
+    </div>
+    <div class="feature">
+      <div class="ico">🌴</div>
+      <h4>Живой мир</h4>
+      <p>Густонаселённые города, дикая природа и десятки занятий по всему штату Леонида.</p>
+    </div>
+    <div class="feature">
+      <div class="ico">🚗</div>
+      <h4>Транспорт</h4>
+      <p>От классических масл-каров до гидроциклов и самолётов — передвигайся как хочешь.</p>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="reveal">
+    <div class="section-tag">Что нового</div>
+    <h2>Особенности <span class="accent">GTA VI</span></h2>
+    <p class="lead">Новое поколение открытого мира: технологии, детализация и глубина, которых ещё не было в серии.</p>
+  </div>
+
+  <div class="features reveal">
+    <div class="feature">
+      <div class="ico">🎬</div>
+      <h4>Кинематографичность</h4>
+      <p>Сюжет уровня большого кино: напряжение, юмор и неожиданные повороты.</p>
+    </div>
+    <div class="feature">
+      <div class="ico">🌐</div>
+      <h4>Онлайн-будущее</h4>
+      <p>Наследие GTA Online продолжается — новые режимы и общий мир для игроков.</p>
+    </div>
+    <div class="feature">
+      <div class="ico">🎧</div>
+      <h4>Саундтрек</h4>
+      <p>Радиостанции на любой вкус: от латины и хип-хопа до синтвейва и рока.</p>
+    </div>
+    <div class="feature">
+      <div class="ico">🌇</div>
+      <h4>Вайс-Сити</h4>
+      <p>Легендарный город в новой детализации — днём и ночью, в солнце и под дождём.</p>
+    </div>
+    <div class="feature">
+      <div class="ico">🕵️</div>
+      <h4>Свобода выбора</h4>
+      <p>Больше способов пройти миссию и больше последствий для каждого решения.</p>
+    </div>
+    <div class="feature">
+      <div class="ico">⚡</div>
+      <h4>Новые консоли</h4>
+      <p>Игра создана под PS5 и Xbox Series X|S — максимум графики и скорости.</p>
+    </div>
+  </div>
+</section>
+
+<section id="release">
+  <div class="reveal">
+    <div class="section-tag">Когда?</div>
+    <h2>Дата <span class="accent">релиза</span></h2>
+    <p class="lead">Официально объявленная дата выхода — 19 ноября 2026 года.</p>
+  </div>
+
+  <div class="release reveal">
+    <div class="release-card">
+      <small>Релиз</small>
+      <div class="release-date">19.11.2026</div>
+      <p style="color:var(--muted);margin-top:8px">Grand Theft Auto VI</p>
+      <div class="platforms">
+        <div class="platform">PlayStation 5</div>
+        <div class="platform">Xbox Series X|S</div>
+      </div>
+    </div>
+    <ul class="checklist">
+      <li><span class="check">✓</span> Разработчик — Rockstar Games</li>
+      <li><span class="check">✓</span> Место действия — штат Леонида, Вайс-Сити</li>
+      <li><span class="check">✓</span> Два протагониста: Люсия и Джейсон</li>
+      <li><span class="check">✓</span> Платформы: PS5 и Xbox Series X|S</li>
+      <li><span class="check">✓</span> Трейлеры уже доступны на официальном канале</li>
+    </ul>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="reveal">
+    <div class="section-tag">Вопросы</div>
+    <h2>Частые <span class="accent">вопросы</span></h2>
+  </div>
+
+  <div class="faq reveal">
+    <div class="faq-item">
+      <button class="faq-q">Когда выходит GTA VI? <span class="plus">+</span></button>
+      <div class="faq-a"><div>Официально заявленная дата — 19 ноября 2026 года. Даты могут переноситься, следи за официальными анонсами Rockstar Games.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">На каких платформах будет игра? <span class="plus">+</span></button>
+      <div class="faq-a"><div>На старте — PlayStation 5 и Xbox Series X|S. Информация о других платформах пока не подтверждена официально.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Где происходит действие? <span class="plus">+</span></button>
+      <div class="faq-a"><div>В вымышленном штате Леонида, вдохновлённом Флоридой. Главный город — Вайс-Сити, знакомый по классическим частям серии.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Кто главные герои? <span class="plus">+</span></button>
+      <div class="faq-a"><div>Люсия и Джейсон — пара протагонистов, чья история стала центральной линией сюжета. Это первый такой дуэт в современной серии.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Будет ли GTA Online? <span class="plus">+</span></button>
+      <div class="faq-a"><div>Rockstar подтверждала планы на онлайн-составляющую, но детали раскрываются постепенно. Следи за официальными источниками.</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div style="font-family:'Anton',sans-serif;font-size:26px;letter-spacing:2px;background:linear-gradient(90deg,var(--pink),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:14px;display:inline-block;">GTA VI</div>
+  <div style="font-weight: 600; color: var(--cyan); font-size: 15px; letter-spacing: 1px; margin-top: 10px;">
+    Автор сайта: <span style="color: var(--text);">nam1REZ</span>
+  </div>
+</footer>
+
+<script>
+  const musicFile = 'music.mp3';
+  let audioPlayer = null;
+  let musicStarted = false;
+
+  function initAudioPlayer() {
+    if (audioPlayer) return;
+    audioPlayer = new Audio(musicFile);
+    audioPlayer.volume = 0.3;
+    audioPlayer.loop = true;
+    audioPlayer.preload = 'auto';
+  }
+
+  function startMusic() {
+    if (musicStarted) return;
+    musicStarted = true;
+    initAudioPlayer();
+    audioPlayer.play().then(() => {
+      console.log("Музыка заиграла");
+    }).catch((error) => {
+      console.warn("Музыка заблокирована:", error);
+      const btn = document.createElement('button');
+      btn.innerText = "🔊 Включить звук";
+      btn.style.cssText = "position:fixed; bottom:20px; left:50%; transform:translateX(-50%); padding:15px 30px; background:#ff2d95; color:#fff; border:none; border-radius:50px; font-weight:bold; z-index:10000; cursor:pointer; box-shadow:0 4px 15px rgba(0,0,0,0.5); font-family:inherit;";
+      btn.onclick = () => { audioPlayer.play(); btn.remove(); };
+      document.body.appendChild(btn);
+    });
+  }
+
+  const tickSound = new Audio('pik.mp3');
+  tickSound.volume = 0.15;
+  tickSound.preload = 'auto';
+  tickSound.load();
+
+  function playTickSound() {
+    try { tickSound.currentTime = 0; } catch(e) {}
+    tickSound.play().catch(() => {});
+  }
+
+  const overlay = document.getElementById('intro-overlay');
+  let startY = 0;
+  let hasEntered = false;
+  let tickTimeout = null;
+
+  function enterSite() {
+    if (hasEntered) return;
+    hasEntered = true;
+    overlay.classList.add('hidden');
+    setTimeout(() => {
+      startMusic();
+      startTimer();
+    }, 100);
+  }
+
+  overlay.addEventListener('touchstart', (e) => {
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+
+  overlay.addEventListener('touchend', (e) => {
+    const endY = e.changedTouches[0].clientY;
+    if (startY - endY > 50) enterSite();
+  });
+
+  overlay.addEventListener('mousedown', (e) => {
+    startY = e.clientY;
+  });
+
+  overlay.addEventListener('mouseup', (e) => {
+    if (startY - e.clientY > 50) enterSite();
+  });
+
+  overlay.addEventListener('click', () => enterSite());
+
+  const burger = document.getElementById('burger');
+  const navLinks = document.getElementById('navLinks');
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    navLinks.classList.toggle('open');
+  });
+  navLinks.querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => {
+      burger.classList.remove('open');
+      navLinks.classList.remove('open');
+    })
+  );
+
+  let scrollTimeout;
+  window.addEventListener('scroll', () => {
+    document.body.classList.add('scrolling');
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      document.body.classList.remove('scrolling');
+    }, 120);
+  }, { passive: true });
+
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const q = item.querySelector('.faq-q');
+    const a = item.querySelector('.faq-a');
+    q.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(o => {
+        o.classList.remove('open');
+        o.querySelector('.faq-a').style.maxHeight = null;
+      });
+      if (!isOpen){
+        item.classList.add('open');
+        a.style.maxHeight = a.scrollHeight + 'px';
+      }
+    });
+  });
+
+  const target = new Date('2026-11-19T00:00:00').getTime();
+  const el = {
+    d: document.getElementById('days'),
+    h: document.getElementById('hours'),
+    m: document.getElementById('mins'),
+    s: document.getElementById('secs'),
+    sBox: document.getElementById('secs-box')
+  };
+  const pad = n => String(n).padStart(2, '0');
+  let lastSecs = -1;
+  let lastVals = { d: -1, h: -1, m: -1 };
+
+  function tick() {
+    const diff = target - Date.now();
+    if (diff <= 0) {
+      if (lastVals.d !== 0) { el.d.textContent = '00'; lastVals.d = 0; }
+      if (lastVals.h !== 0) { el.h.textContent = '00'; lastVals.h = 0; }
+      if (lastVals.m !== 0) { el.m.textContent = '00'; lastVals.m = 0; }
+      if (lastSecs !== 0) { el.s.textContent = '00'; lastSecs = 0; }
+      return;
+    }
+
+    const days = Math.floor(diff / 86400000);
+    const hours = Math.floor(diff % 86400000 / 3600000);
+    const mins = Math.floor(diff % 3600000 / 60000);
+    const secs = Math.floor(diff % 60000 / 1000);
+
+    if (days !== lastVals.d) { el.d.textContent = days; lastVals.d = days; }
+    if (hours !== lastVals.h) { el.h.textContent = pad(hours); lastVals.h = hours; }
+    if (mins !== lastVals.m) { el.m.textContent = pad(mins); lastVals.m = mins; }
+
+    if (secs !== lastSecs) {
+      el.s.textContent = pad(secs);
+
+      if (lastSecs !== -1 && hasEntered) {
+        playTickSound();
+      }
+
+      const hue = 180 + (secs / 59) * 150;
+      el.s.style.color = `hsl(${hue}, 100%, 75%)`;
+      el.s.style.textShadow = `0 0 15px hsl(${hue}, 100%, 50%)`;
+      el.sBox.style.borderColor = `hsla(${hue}, 100%, 50%, 0.5)`;
+      el.sBox.style.boxShadow = `0 0 20px hsla(${hue}, 100%, 50%, 0.2)`;
+
+      lastSecs = secs;
+      el.s.classList.add('tick-pulse');
+      setTimeout(() => el.s.classList.remove('tick-pulse'), 120);
+    }
+  }
+
+  function scheduleTick() {
+    const now = Date.now();
+    const diff = target - now;
+    if (diff <= 0) {
+      tick();
+      return;
+    }
+    const msToBoundary = (diff % 1000) + 5;
+    tickTimeout = setTimeout(() => {
+      tick();
+      scheduleTick();
+    }, msToBoundary);
+  }
+
+  function startTimer() {
+    if (tickTimeout) return;
+    tick();
+    scheduleTick();
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (tickTimeout) { clearTimeout(tickTimeout); tickTimeout = null; }
+      if (audioPlayer) audioPlayer.pause();
+    } else {
+      if (hasEntered && !tickTimeout) {
+        startTimer();
+      }
+      if (audioPlayer && musicStarted) audioPlayer.play();
+    }
+  });
+</script>
+</body>
+</html>
